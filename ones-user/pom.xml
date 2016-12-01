@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.wsx</groupId>
+    <artifactId>ones</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>ones-user</artifactId>
+  <packaging>war</packaging>
+  <name>ones-user Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  <dependencies>
+    <dependency>
+		<groupId>com.wsx</groupId>
+	   	<artifactId>ones-final</artifactId>
+	   	<version>0.0.1-SNAPSHOT</version>
+	   	<type>jar</type>
+  	</dependency>
+    <dependency>
+		<groupId>com.wsx</groupId>
+	   	<artifactId>ones-common</artifactId>
+	   	<version>0.0.1-SNAPSHOT</version>
+	   	<type>jar</type>
+  	</dependency>
+    <dependency>
+		<groupId>com.wsx</groupId>
+	   	<artifactId>ones-core</artifactId>
+	   	<version>0.0.1-SNAPSHOT</version>
+	   	<type>jar</type>
+  	</dependency>
+  	
+  	
+	<dependency>
+		<groupId>org.springframework.data</groupId>
+		<artifactId>spring-data-mongodb</artifactId>
+		<version>1.2.0.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.mongodb</groupId>
+		<artifactId>mongo-java-driver</artifactId>
+		<version>2.13.3</version>
+	</dependency>
+  	
+  	
+  	<dependency>
+		<groupId>com.dangdang</groupId>
+		<artifactId>sharding-jdbc-core</artifactId>
+		<version>1.3.1-SNAPSHOT</version>
+		<!-- 1.0.0的版本支持xmlbean的形式配置分库分表   1.3.1-SNAPSHOT -->
+	</dependency>
+	<!-- 如果无法联网，读取不到rdb.xsd文件，可以读取本地的文件，在sharding-jdbc-config-spring包中 -->
+	<dependency>
+		<groupId>com.dangdang</groupId>
+		<artifactId>sharding-jdbc-config-spring</artifactId>
+		<version>1.3.1-SNAPSHOT</version>
+	</dependency>
+	
+  </dependencies>
+  <build>
+    <finalName>ones-user</finalName>
+  </build>
+</project>

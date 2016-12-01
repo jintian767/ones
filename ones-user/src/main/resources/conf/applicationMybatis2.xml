@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:rdb="http://www.dangdang.com/schema/ddframe/rdb"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+    					http://www.springframework.org/schema/context 
+    					http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    					http://www.springframework.org/schema/mvc 
+    					http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+    					http://www.springframework.org/schema/context 
+    					http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    					http://mybatis.org/schema/mybatis-spring 
+    					http://mybatis.org/schema/mybatis-spring-1.2.xsd
+    					http://www.springframework.org/schema/tx 
+    					http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    					http://www.dangdang.com/schema/ddframe/rdb 
+    					http://www.dangdang.com/schema/ddframe/rdb/rdb.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+	
+	<context:component-scan base-package="com.wsx.friends.user" />
+    
+    <!-- mapper扫描的javabean路径 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<!-- mapper.java 的扫描如果有多个用逗号隔开 -->
+        <property name="basePackage" value="com.wsx.friends.user.signup.mapper,com.wsx.friends.user.rpc.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+    
+    <!-- 配置sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="shardingDataSource"/>
+        <!-- 扫描类路径下的开头classpath*  扫描某个文件夹上面的所有文件**   *是匹配符 -->
+        <property name="mapperLocations" value="classpath*:/com/wsx/friends/user/**/mapper/*Mapper.xml"/>
+    </bean>
+    
+    <!-- t_user分库策略 -->
+    <rdb:strategy id="userDatabaseShardingStrategy" sharding-columns="user_id" algorithm-class="com.wsx.friends.dangdang.algorithm.UserSingleKeyDatabaseShardingAlgorithm"/>
+    
+    <!-- t_user 分表策略 -->
+    <rdb:strategy id="userTableShardingStrategy" sharding-columns="user_id" algorithm-class="com.wsx.friends.dangdang.algorithm.UserSingleKeyTableShardingAlgorithm"/>
+    
+    <!-- t_student分库策略 -->
+    <rdb:strategy id="studentDatabaseShardingStrategy" sharding-columns="student_id" algorithm-class="com.wsx.friends.dangdang.algorithm.StudentSingleKeyDatabaseShardingAlgorithm"/>
+    
+    <!-- t_student 分表策略 -->
+    <rdb:strategy id="studentTableShardingStrategy" sharding-columns="student_id" algorithm-class="com.wsx.friends.dangdang.algorithm.StudentSingleKeyTableShardingAlgorithm"/>
+    
+    <!-- web_user分库策略 -->
+    <rdb:strategy id="webUserDatabaseSharding" sharding-columns="user_id" algorithm-class="com.wsx.friends.dangdang.algorithm.UserKeyDatabaseSharding"/>
+    
+    <!-- web_user 分表策略 -->
+    <rdb:strategy id="webUserTableSharding" sharding-columns="user_id" algorithm-class="com.wsx.friends.dangdang.algorithm.UserKeyTableSharding"/>
+    
+    <rdb:data-source id="shardingDataSource">
+    	<rdb:sharding-rule data-sources="sharding_0,sharding_1">
+    		<rdb:table-rules>
+    			<rdb:table-rule logic-table="web_user" actual-tables="web_user_${0..9}" database-strategy="webUserDatabaseSharding" table-strategy="webUserTableSharding"/>
+    			<rdb:table-rule logic-table="t_student" actual-tables="t_student_${0..1}" database-strategy="studentDatabaseShardingStrategy" table-strategy="studentTableShardingStrategy"/>
+    			<rdb:table-rule logic-table="t_user" actual-tables="t_user_${0..2}" database-strategy="userDatabaseShardingStrategy" table-strategy="userTableShardingStrategy"/>
+    		</rdb:table-rules>
+    	</rdb:sharding-rule>
+    </rdb:data-source>
+
+    <!-- 事务 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="shardingDataSource" />
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+</beans>
