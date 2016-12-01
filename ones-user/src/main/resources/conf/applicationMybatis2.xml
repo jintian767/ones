@@ -62,9 +62,9 @@
     <rdb:data-source id="shardingDataSource">
     	<rdb:sharding-rule data-sources="sharding_0,sharding_1">
     		<rdb:table-rules>
-    			<rdb:table-rule logic-table="web_user" actual-tables="web_user_${0..9}" database-strategy="webUserDatabaseSharding" table-strategy="webUserTableSharding"/>
-    			<rdb:table-rule logic-table="t_student" actual-tables="t_student_${0..1}" database-strategy="studentDatabaseShardingStrategy" table-strategy="studentTableShardingStrategy"/>
-    			<rdb:table-rule logic-table="t_user" actual-tables="t_user_${0..2}" database-strategy="userDatabaseShardingStrategy" table-strategy="userTableShardingStrategy"/>
+    			<rdb:table-rule logic-table="web_user" actual-tables="web_user_0,web_user_1,web_user_2,web_user_3,web_user_4,web_user_5,web_user_6,web_user_7,web_user_8,web_user_9" database-strategy="webUserDatabaseSharding" table-strategy="webUserTableSharding"/>
+    			<rdb:table-rule logic-table="t_student" actual-tables="t_student_0,t_student_1" database-strategy="studentDatabaseShardingStrategy" table-strategy="studentTableShardingStrategy"/>
+    			<rdb:table-rule logic-table="t_user" actual-tables="t_user_0,t_user_1,t_user_2" database-strategy="userDatabaseShardingStrategy" table-strategy="userTableShardingStrategy"/>
     		</rdb:table-rules>
     	</rdb:sharding-rule>
     </rdb:data-source>

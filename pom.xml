@@ -407,5 +407,6 @@
   	<module>ones-common</module>
   	<module>ones-final</module>
   	<module>ones-user</module>
+  	<module>ones-user-inter</module>
   </modules>
 </project>
