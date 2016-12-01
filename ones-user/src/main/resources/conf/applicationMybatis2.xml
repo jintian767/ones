@@ -25,12 +25,12 @@
 						http://www.springframework.org/schema/aop 
 						http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	
-	<context:component-scan base-package="com.wsx.friends.user" />
+	<context:component-scan base-package="com.wsx.ones.user" />
     
     <!-- mapper扫描的javabean路径 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
     	<!-- mapper.java 的扫描如果有多个用逗号隔开 -->
-        <property name="basePackage" value="com.wsx.friends.user.signup.mapper,com.wsx.friends.user.rpc.mapper"/>
+        <property name="basePackage" value="com.wsx.ones.user.signup.mapper,com.wsx.ones.user.rpc.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
     
@@ -38,26 +38,26 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="shardingDataSource"/>
         <!-- 扫描类路径下的开头classpath*  扫描某个文件夹上面的所有文件**   *是匹配符 -->
-        <property name="mapperLocations" value="classpath*:/com/wsx/friends/user/**/mapper/*Mapper.xml"/>
+        <property name="mapperLocations" value="classpath*:/com/wsx/ones/user/**/mapper/*Mapper.xml"/>
     </bean>
     
     <!-- t_user分库策略 -->
-    <rdb:strategy id="userDatabaseShardingStrategy" sharding-columns="user_id" algorithm-class="com.wsx.friends.dangdang.algorithm.UserSingleKeyDatabaseShardingAlgorithm"/>
+    <rdb:strategy id="userDatabaseShardingStrategy" sharding-columns="user_id" algorithm-class="com.wsx.ones.dangdang.algorithm.UserSingleKeyDatabaseShardingAlgorithm"/>
     
     <!-- t_user 分表策略 -->
-    <rdb:strategy id="userTableShardingStrategy" sharding-columns="user_id" algorithm-class="com.wsx.friends.dangdang.algorithm.UserSingleKeyTableShardingAlgorithm"/>
+    <rdb:strategy id="userTableShardingStrategy" sharding-columns="user_id" algorithm-class="com.wsx.ones.dangdang.algorithm.UserSingleKeyTableShardingAlgorithm"/>
     
     <!-- t_student分库策略 -->
-    <rdb:strategy id="studentDatabaseShardingStrategy" sharding-columns="student_id" algorithm-class="com.wsx.friends.dangdang.algorithm.StudentSingleKeyDatabaseShardingAlgorithm"/>
+    <rdb:strategy id="studentDatabaseShardingStrategy" sharding-columns="student_id" algorithm-class="com.wsx.ones.dangdang.algorithm.StudentSingleKeyDatabaseShardingAlgorithm"/>
     
     <!-- t_student 分表策略 -->
-    <rdb:strategy id="studentTableShardingStrategy" sharding-columns="student_id" algorithm-class="com.wsx.friends.dangdang.algorithm.StudentSingleKeyTableShardingAlgorithm"/>
+    <rdb:strategy id="studentTableShardingStrategy" sharding-columns="student_id" algorithm-class="com.wsx.ones.dangdang.algorithm.StudentSingleKeyTableShardingAlgorithm"/>
     
     <!-- web_user分库策略 -->
-    <rdb:strategy id="webUserDatabaseSharding" sharding-columns="user_id" algorithm-class="com.wsx.friends.dangdang.algorithm.UserKeyDatabaseSharding"/>
+    <rdb:strategy id="webUserDatabaseSharding" sharding-columns="user_id" algorithm-class="com.wsx.ones.dangdang.algorithm.UserKeyDatabaseSharding"/>
     
     <!-- web_user 分表策略 -->
-    <rdb:strategy id="webUserTableSharding" sharding-columns="user_id" algorithm-class="com.wsx.friends.dangdang.algorithm.UserKeyTableSharding"/>
+    <rdb:strategy id="webUserTableSharding" sharding-columns="user_id" algorithm-class="com.wsx.ones.dangdang.algorithm.UserKeyTableSharding"/>
     
     <rdb:data-source id="shardingDataSource">
     	<rdb:sharding-rule data-sources="sharding_0,sharding_1">
